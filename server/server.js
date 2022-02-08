@@ -145,7 +145,6 @@ app.delete("/api/v1/restaurants/:id", (req,res) => {
 
 //********************************** login page, register page and authentication routes/middleware *******************************
 
-
 //middleware for registration and login veryfication
 app.use((req,res, next) => {
     const { email, name, password } = req.body; //destructure
@@ -224,7 +223,7 @@ app.post("/api/v1/restaurants/login", async (req, res) => {
         }
 
         //3. check if incoming password is the same as the database password
-        const validPassword = await bcrypt.compare(password, user.rows[0].user_password)
+        const validPassword = await bcrypt.compare(password, user.rows[0].user_password) //Comparing inputed password with the password in the database
 
         if(!validPassword) {
             return res.status(401).json("Password or Email is incorrect")
@@ -276,7 +275,7 @@ app.post("/api/v1/restaurants/is-verify", async (req,res) => {
 
 
 //route for getting authorized user's information when on home page
-app.post('/api/v1/restaurants/home', async (req, res) => {
+app.get('/api/v1/restaurants/home', async (req, res) => {
     try {
       const user = await db.query("SELECT user_name FROM users WHERE user_id = $1",[req.user]); //req.user has the payload (from authorization middleware)
       res.json(user.rows[0]);
@@ -285,7 +284,6 @@ app.post('/api/v1/restaurants/home', async (req, res) => {
       res.status(500).send("Server error");
     }
   });
-
 
 
 

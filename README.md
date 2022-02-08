@@ -61,3 +61,4 @@ user_password VARCHAR(255) NOT NULL
 |npm i cors |Middleware that allows fetch requests from other domains(allows our front-end on a different local host to send a request to this local host)|
 |npm i jsonwebtoken |Used to generate our json web token to verify it|
 |npm i bcrypt |Encypt user passwords so that it does not just show the password in the database|
+|npm i react-toastify|Used for displaying notifications|
