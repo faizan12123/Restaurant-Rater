@@ -51,6 +51,7 @@ app.get('/api/v1/restaurants/home', async (req, res) => {
     }
 }); //displays this json onto the URL: http://localhost:3001/api/v1/restaurants
 
+
 //get a restaurant and the reviews for that restaurant and the average rating of that restaurant and the amount of reviews for that restaurant
 app.get("/api/v1/restaurants/:id", async (req, res) => {
     try {
@@ -183,7 +184,7 @@ app.post("/api/v1/restaurants/register", async (req, res) => {
         const user = await db.query("SELECT * FROM users WHERE user_email = $1", [email])
 
         if(user.rows.length !==0) {
-            return res.status(401).send("User already exists") //401 = unauthenticated 
+            return res.status(401).json("User already exists") //401 = unauthenticated 
         }
         //3. Bcrypt the user password
         const saltRound = 10; //how encrypted the password will be
@@ -203,7 +204,7 @@ app.post("/api/v1/restaurants/register", async (req, res) => {
 
     } catch (err) {
         console.log(err.message)
-        res.status(500).send("Server Error")
+        res.status(500).json("Server Error")
     }
 })
 
@@ -243,17 +244,17 @@ app.post("/api/v1/restaurants/login", async (req, res) => {
 
 //middleware for authorization to authorize the person. Making sure the token is legit
 app.use((req,res, next) => { 
-    try {
-        const jwtToken = req.header("token")
+
+    const jwtToken = req.header("token") //get token from header
 
         if(!jwtToken) { //if there is no jwt token then the user is not authorized to access that entity
             return res.status(403).json("Not Authorized")
         }
 
-        const payload = jwt.verify(jwtToken, process.env.jwtSecret) //checks to see if the jwt token is valid, if it is then we can return a payload that we can use within our routes
+    try {
+        const verify = jwt.verify(jwtToken, process.env.jwtSecret) //checks to see if the jwt token is valid, if it is then we can return a payload that we can use within our routes
 
-        req.user = payload.user; //user is from the jwtGenerator.js file
-
+        req.user = verify.user; //user is from the jwtGenerator.js file
 
     } catch (err) {
         console.log(err.message)
@@ -275,7 +276,7 @@ app.post("/api/v1/restaurants/is-verify", async (req,res) => {
 
 
 //route for getting authorized user's information when on home page
-app.get('/api/v1/restaurants/home', async (req, res) => {
+app.post('/api/v1/restaurants/home', async (req, res) => {
     try {
       const user = await db.query("SELECT user_name FROM users WHERE user_id = $1",[req.user]); //req.user has the payload (from authorization middleware)
       res.json(user.rows[0]);

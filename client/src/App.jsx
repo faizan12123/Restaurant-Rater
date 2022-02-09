@@ -1,47 +1,57 @@
-import React, { useState } from 'react'
-import {BrowserRouter as Router, Route, Routes, Navigate, Outlet} from "react-router-dom"
+import React, { useEffect, useState } from 'react'
+import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css"
+import {toast} from "react-toastify"
 import Home from "./routes/Home"
 import UpdatePage from "./routes/UpdatePage"
 import RestaurantDetailPage from "./routes/RestaurantDetailPage"
+import LoginPage from './components/LoginPage'
+import RegisterPage from './components/RegisterPage'
 import { RestaurantsContextProvider } from './context/RestaurantsContext'
-import Login from './routes/Login'
-import Register from './routes/Register'
-import "react-toastify/dist/ReactToastify.css"
-import PrivateRoute from './routes/PrivateRoute'
+
+toast.configure()
+
 const App = () => { //connecting the urls to the corresponding react pages
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const setAuth = (boolean) => {
+      setIsAuthenticated(boolean);
+    };
+
+    //veryfying the token in the storage if there is a token in the storage
+    const checkAuthenticated = async () => {
+        try {
+            const response = await fetch("http://localhost:3001/api/v1/restaurants/is-verify", {
+                method: "POST",
+                headers: {token: localStorage.token}
+            })
+
+            const parseRes = await response.json() //will return whether the token is true or not
+
+
+            parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false); //if their is a token in storage and it is verified, authenticate the user
+
+        } catch (err){
+    console.error(err.message);
+        }
+    }
+    useEffect(() => {
+        checkAuthenticated()
+    },[])
+  
     return ( 
         <RestaurantsContextProvider>
-            <div className='container-fluid'>
+            <div>
                 <Router>
                     <Routes>
 
-                        {/* home page route*/}
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/home" element={<Home/>} />
-                    </Route>
-
-                        {/* Update Page Route */}
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/restaurants/:id/update" element={<UpdatePage/>} />
-                    </Route>
-
-                        {/* Restaurant Detail Page Route */}
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/restaurants/:id" element={<RestaurantDetailPage/>} />
-                    </Route>
-
-                        {/* Login Page Route */}
-                    <Route exact path = "/login"  element ={<Login/>} />
-
-                        {/* Register Page Route */}
-                    <Route exact path = "/register"  element ={<Register/>} />
-
-                    {/* <Route exact path = "/home"  element ={<Home/>} render = {props => isAuthenticated ? (<Home {...props}/>) : (<Navigate to ="/login" />)} />  */}
-                    {/* <Route exact path = "/restaurants/:id/update" element ={<UpdatePage/>} render = {props => <UpdatePage {...props}/>} /> */}
-                    {/* <Route exact path = "/restaurants/:id" element ={<RestaurantDetailPage/>} render = {props => <RestaurantDetailPage {...props}/>} /> */}
-                    {/* <Route exact path = "/login" element ={<Login/>} render = {props => !isAuthenticated ? <Login {...props}/> :<Navigate to="/home"/>} />
-                    <Route exact path = "/register"  element ={<Register/>} render = {props => !isAuthenticated ? <Register {...props}/> :<Navigate to="/home"/>}/> */}
+                    <Route path="/" element = {<Navigate to="/home" />}/>
+                    <Route path="/home" element= {isAuthenticated ? ( <Home setAuth={setAuth} />) : (<Navigate to="/login" />)}/>
+                    <Route path="/restaurants/:id/update" element= {isAuthenticated ? (<UpdatePage setAuth={setAuth} />) : (<Navigate to="/login" />)}/>
+                    <Route path="/restaurants/:id" element= {isAuthenticated ? (<RestaurantDetailPage setAuth={setAuth} />) : (<Navigate to="/login"/>)}/>
+                    <Route path="/login" element={!isAuthenticated ? (<LoginPage setAuth={setAuth} />) : (<Navigate to="/home" />)}/>
+                    <Route path="/register" element={ !isAuthenticated ? (<RegisterPage setAuth={setAuth} />) : (<Navigate to="/home" />)}/>
                     </Routes>
                 </Router>
             </div>
