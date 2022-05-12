@@ -18,6 +18,9 @@ const AddRestaurant = () => {
                 price_range: priceRange //our backend DB is expecting price_range so that is why it is with "_" on the left
             }) 
             addRestaurants(response.data.data.restaurant) //adds the new restaurant to the existing list of restaurants in the "restaurants" context, which updates the existing displayed restaurants since the table displays the values from the "restaurants" context
+            setName("")
+            setLocation("")
+            setPriceRange("Price Range")
         } catch (err) {
             console.log(err);
         }

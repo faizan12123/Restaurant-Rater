@@ -52,6 +52,7 @@ const App = () => { //connecting the urls to the corresponding react pages
                     <Route path="/restaurants/:id" element= {isAuthenticated ? (<RestaurantDetailPage setAuth={setAuth} />) : (<Navigate to="/login"/>)}/>
                     <Route path="/login" element={!isAuthenticated ? (<LoginPage setAuth={setAuth} />) : (<Navigate to="/home" />)}/>
                     <Route path="/register" element={ !isAuthenticated ? (<RegisterPage setAuth={setAuth} />) : (<Navigate to="/home" />)}/>
+                    
                     </Routes>
                 </Router>
             </div>
