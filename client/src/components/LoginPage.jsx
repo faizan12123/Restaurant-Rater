@@ -23,9 +23,8 @@ const LoginPage = ({setAuth}) => {
         try {
 
             const body = {email, password}
-            const response = await fetch("http://localhost:3001/api/v1/restaurants/login", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
+            const response = await RestaurantFinder.post("/login", {
+                method: "POST",                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             })
 

@@ -22,8 +22,7 @@ const App = () => { //connecting the urls to the corresponding react pages
     //veryfying the token in the storage if there is a token in the storage
     const checkAuthenticated = async () => {
         try {
-            const response = await fetch("http://localhost:3001/api/v1/restaurants/is-verify", {
-                method: "POST",
+            const response = await RestaurantFinder.post("/is-verify", {
                 headers: {token: localStorage.token}
             })
 
