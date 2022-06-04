@@ -13,7 +13,7 @@ toast.configure()
 
 const App = () => { //connecting the urls to the corresponding react pages
 
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const setAuth = (boolean) => {
       setIsAuthenticated(boolean);
