@@ -24,7 +24,7 @@ const App = () => { //connecting the urls to the corresponding react pages
     const checkAuthenticated = async () => {
         if(process.env.NODE_ENV === 'production'){
             try {
-                const response = await fetch("https://faizansrestaurantrater.com/api/v1/restaurants/is-verify", {
+                const response = await fetch("/api/v1/restaurants/is-verify", {
                     method: "POST",
                     headers: {token: localStorage.token}
                 })

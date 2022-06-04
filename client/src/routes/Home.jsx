@@ -11,7 +11,7 @@ const Home = ({setAuth}) => {
     const getProfile = async () => {
         if(process.env.NODE_ENV === 'production'){
         try {
-            const response = await fetch("https://faizansrestaurantrater.com/api/v1/restaurants/home", {
+            const response = await fetch("/api/v1/restaurants/home", {
                 method: "POST",
                 headers: {token: localStorage.token} //because the authorization route in the server.js wants the token from the header
             })
