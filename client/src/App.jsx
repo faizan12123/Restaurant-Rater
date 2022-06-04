@@ -8,7 +8,6 @@ import RestaurantDetailPage from "./routes/RestaurantDetailPage"
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
 import { RestaurantsContextProvider } from './context/RestaurantsContext'
-import RestaurantFinder from './apis/RestaurantFinder'
 
 toast.configure()
 
@@ -20,21 +19,41 @@ const App = () => { //connecting the urls to the corresponding react pages
       setIsAuthenticated(boolean);
     };
 
+    
     //veryfying the token in the storage if there is a token in the storage
     const checkAuthenticated = async () => {
-        try {
-            const response = await RestaurantFinder.post("/is-verify", {
-                headers: {token: localStorage.token}
-            })
-
-            const parseRes = await response.json() //will return whether the token is true or not
-
-
-            parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false); //if their is a token in storage and it is verified, authenticate the user
-
-        } catch (err){
-    console.error(err.message);
+        if(process.env.NODE_ENV === 'production'){
+            try {
+                const response = await fetch("/api/v1/restaurants/is-verify", {
+                    method: "POST",
+                    headers: {token: localStorage.token}
+                })
+    
+                const parseRes = await response.json() //will return whether the token is true or not
+    
+    
+                parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false); //if their is a token in storage and it is verified, authenticate the user
+    
+            } catch (err){
+        console.error(err.message);
+            }
+        } else {
+            try {
+                const response = await fetch("http://localhost:3001/api/v1/restaurants/is-verify", {
+                    method: "POST",
+                    headers: {token: localStorage.token}
+                })
+    
+                const parseRes = await response.json() //will return whether the token is true or not
+    
+    
+                parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false); //if their is a token in storage and it is verified, authenticate the user
+    
+            } catch (err){
+        console.error(err.message);
+            }
         }
+        
     }
     useEffect(() => {
         checkAuthenticated()

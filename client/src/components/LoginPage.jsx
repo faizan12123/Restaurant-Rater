@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {Link} from "react-router-dom"
 import {toast} from "react-toastify"
-import RestaurantFinder from '../apis/RestaurantFinder'
 
 
 const LoginPage = ({setAuth}) => {
@@ -20,12 +19,12 @@ const LoginPage = ({setAuth}) => {
 
     const onSubmitForm = async (e) => {
         e.preventDefault()
-
+        if(process.env.NODE_ENV === 'production'){
         try {
-
             const body = {email, password}
-            const response = await RestaurantFinder.post("/login", {
-                method: "POST",                headers: {"Content-Type": "application/json"},
+            const response = await fetch("/api/v1/restaurants/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             })
 
@@ -43,6 +42,30 @@ const LoginPage = ({setAuth}) => {
         } catch (err) {
             console.error(err.message)
         }
+      } else {
+        try {
+          const body = {email, password}
+          const response = await fetch("http://localhost:3001/api/v1/restaurants/login", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(body)
+          })
+
+          const parseRes = await response.json() //getting the token and storing it in a variable
+
+          if(parseRes.token) { //if there is a token generated
+              localStorage.setItem('token', parseRes.token) //storing the token in the local storage
+              setAuth(true)
+              toast.success("login successfull!")
+          } else {
+              setAuth(false)
+              toast.error(parseRes) //returning the error created in the login route in server.js
+          }
+          
+      } catch (err) {
+          console.error(err.message)
+      }
+      }
     }
     return (
         <div>
