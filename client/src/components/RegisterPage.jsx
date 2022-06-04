@@ -24,8 +24,7 @@ const RegisterPage = ({setAuth}) => {
     try {
       const body = {email, password, name}
 
-      const response = await fetch("http://localhost:3001/api/v1/restaurants/register", {
-        method: "POST",
+      const response = await RestaurantFinder.post("/register", {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       })

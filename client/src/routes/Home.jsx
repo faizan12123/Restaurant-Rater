@@ -10,8 +10,7 @@ const Home = ({setAuth}) => {
 
     const getProfile = async () => {
         try {
-            const response = await fetch("http://localhost:3001/api/v1/restaurants/home", {
-                method: "POST",
+            const response = await RestaurantFinder.post("/home", {
                 headers: {token: localStorage.token} //because the authorization route in the server.js wants the token from the header
             })
             const parseRes = await response.json()
