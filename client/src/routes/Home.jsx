@@ -3,6 +3,8 @@ import AddRestaurant from '../components/AddRestaurant'
 import Header from '../components/Header'
 import RestaurantList from '../components/RestaurantList'
 import {toast} from "react-toastify"
+import RestaurantFinder from '../apis/RestaurantFinder'
+
 
 const Home = ({setAuth}) => { 
 

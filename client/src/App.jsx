@@ -8,6 +8,7 @@ import RestaurantDetailPage from "./routes/RestaurantDetailPage"
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
 import { RestaurantsContextProvider } from './context/RestaurantsContext'
+import RestaurantFinder from './apis/RestaurantFinder'
 
 toast.configure()
 
