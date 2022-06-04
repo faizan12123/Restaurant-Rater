@@ -3,16 +3,16 @@ import AddRestaurant from '../components/AddRestaurant'
 import Header from '../components/Header'
 import RestaurantList from '../components/RestaurantList'
 import {toast} from "react-toastify"
-import RestaurantFinder from '../apis/RestaurantFinder'
-
 
 const Home = ({setAuth}) => { 
 
     const [name, setName] = useState("")
 
     const getProfile = async () => {
+        if(process.env.NODE_ENV === 'production'){
         try {
-            const response = await RestaurantFinder.post("/home", {
+            const response = await fetch("/api/v1/restaurants/home", {
+                method: "POST",
                 headers: {token: localStorage.token} //because the authorization route in the server.js wants the token from the header
             })
             const parseRes = await response.json()
@@ -22,6 +22,20 @@ const Home = ({setAuth}) => {
         } catch (err) {
             console.error(err.message)
         }
+    } else {
+        try {
+            const response = await fetch("http://localhost:3001/api/v1/restaurants/home", {
+                method: "POST",
+                headers: {token: localStorage.token} //because the authorization route in the server.js wants the token from the header
+            })
+            const parseRes = await response.json()
+            setName(parseRes.user_name)
+            
+
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
     }
 
     const logout = async (e) => {

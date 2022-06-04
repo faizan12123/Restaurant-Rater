@@ -20,11 +20,12 @@ const RegisterPage = ({setAuth}) => {
 
   const onSubmitForm = async (e) => {
     e.preventDefault() //prevents page from refreshing
-
+    if(process.env.NODE_ENV === 'production'){
     try {
       const body = {email, password, name}
-
-      const response = await RestaurantFinder.post("/register", {
+      
+      const response = await fetch("/api/v1/restaurants/register", {
+        method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       })
@@ -44,6 +45,32 @@ const RegisterPage = ({setAuth}) => {
     } catch (err) {
       console.log(err.message);
     }
+  } else {
+    try {
+      const body = {email, password, name}
+      
+      const response = await fetch("http://localhost:3001/api/v1/restaurants/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      })
+
+      const parseRes = await response.json()
+      console.log(parseRes);
+
+      if(parseRes.token) { //if there is a token generated
+        localStorage.setItem("token",parseRes.token)
+        setAuth(true)
+        toast.success("Registered Successfully")
+      } else {
+        setAuth(false)
+        toast.error(parseRes) //returning the error defined in the registration route
+      }
+      
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
   }
 
   return <div className='container'> 
