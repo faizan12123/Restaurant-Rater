@@ -22,7 +22,7 @@ const LoginPage = ({setAuth}) => {
         if(process.env.NODE_ENV === 'production'){
         try {
             const body = {email, password}
-            const response = await fetch("/api/v1/restaurants/login", {
+            const response = await fetch("https://faizansrestaurantrater.com/api/v1/restaurants/login", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
