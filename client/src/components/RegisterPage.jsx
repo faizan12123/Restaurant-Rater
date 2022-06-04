@@ -24,7 +24,7 @@ const RegisterPage = ({setAuth}) => {
     try {
       const body = {email, password, name}
       
-      const response = await fetch("https://faizansrestaurantrater.com/api/v1/restaurants/register", {
+      const response = await fetch("/api/v1/restaurants/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
