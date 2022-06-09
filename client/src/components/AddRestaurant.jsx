@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import RestaurantFinder from "../apis/RestaurantFinder"
 import { RestaurantsContext } from '../context/RestaurantsContext';
+import Warning from './Warning';
 
 const AddRestaurant = () => {
     const {addRestaurants} = useContext(RestaurantsContext)
@@ -60,6 +61,7 @@ const AddRestaurant = () => {
                     </div>
                 </div>
             </form>
+            
         </div>
     )
 }

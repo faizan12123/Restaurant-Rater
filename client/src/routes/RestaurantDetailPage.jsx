@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import { useNavigate, useParams} from 'react-router-dom'
 import RestaurantFinder from '../apis/RestaurantFinder'
 import AddReview from '../components/AddReview'
+import Back from '../components/Back'
 import Reviews from '../components/Reviews'
 import StarRating from '../components/StarRating'
 import { RestaurantsContext } from '../context/RestaurantsContext'
@@ -29,7 +30,8 @@ const RestaurantDetailPage = () => {
 
     return (
         
-            <div>
+            <div className="mr-5 ml-5 mt-2 mb-5">
+                <Back/>
                 {selectedRestaurant && (
                 <>
                 <h1 className='text-center display-1'>{selectedRestaurant.restaurant.name}</h1>

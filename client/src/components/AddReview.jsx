@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { RestaurantsContext } from '../context/RestaurantsContext';
 import RestaurantFinder from "../apis/RestaurantFinder"
+import Warning from './Warning';
 
 const AddReview = () => {
 
@@ -27,7 +28,7 @@ const AddReview = () => {
     }
 
     return (
-        <div className='mb-2'>
+        <div>
             <form action ="">
                 <div className="form-row">
 
@@ -58,8 +59,9 @@ const AddReview = () => {
                 </div>
 
                 {/*submit button for the review*/}
-                <button onClick={handleSubmitReview} type="submit" className="btn btn-info">Submit</button>
+                <button onClick={handleSubmitReview} type="submit" className="btn btn-info mb-3">Submit</button>
             </form>
+            <Warning/>
         </div>
     )
 }
