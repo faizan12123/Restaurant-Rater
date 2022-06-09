@@ -6,6 +6,8 @@ data from the backend so we will have to use the useEffect() hook again instead*
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams} from 'react-router-dom'
 import RestaurantFinder from '../apis/RestaurantFinder'
+import Back from './Back'
+import Warning from './Warning'
 
 const UpdateRestaurant = (props) => {
     let navigate = useNavigate()
@@ -46,6 +48,7 @@ const UpdateRestaurant = (props) => {
 
     return (
         <div>
+          
             <form action = "">
 
                 <div className='form-group'>
@@ -60,7 +63,7 @@ const UpdateRestaurant = (props) => {
 
                 <div className='form-group'>
                     <label htmlFor='price_range'>Price Range</label>
-                    <select value = {priceRange} onChange={e => setPriceRange(e.target.value)} id='price_range' className='form-control' type='number' className = "custom-select">
+                    <select value = {priceRange} onChange={e => setPriceRange(e.target.value)} id='price_range' className='form-control custom-select' type='number'>
                         <option disabled> Price Range</option>
                         <option value = "1">$</option>
                         <option value = "2">$$</option>
@@ -70,10 +73,11 @@ const UpdateRestaurant = (props) => {
                         </select>
                 </div>
 
-                <button type = 'submit' onClick={handleSubmit} className='btn btn-info'>Submit</button>
+                <button type = 'submit' onClick={handleSubmit} className='btn btn-info mb-3'>Submit</button>
 
 
             </form>
+            <Warning/>
         </div>
     )
 }

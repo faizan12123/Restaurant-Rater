@@ -3,6 +3,8 @@ import AddRestaurant from '../components/AddRestaurant'
 import Header from '../components/Header'
 import RestaurantList from '../components/RestaurantList'
 import {toast} from "react-toastify"
+import Warning from '../components/Warning'
+import Footer from '../components/Footer'
 
 const Home = ({setAuth}) => { 
 
@@ -49,11 +51,12 @@ const Home = ({setAuth}) => {
         getProfile()
     }, []) //adding the [] makes sure that it ends the requests once it is rendered
     return (
-        <div>
+        <div className="mr-5 ml-5 mt-2 mb-5">
             <button onClick={(e) => logout(e)} className='btn btn-info'>Logout {name}</button>
             <Header/>
             <AddRestaurant/>
             <RestaurantList/>
+            <Warning/>
         </div>
     )
 }

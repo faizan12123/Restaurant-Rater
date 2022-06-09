@@ -1,10 +1,14 @@
 import React from 'react'
+import Back from './Back'
 import StarRating from './StarRating'
+import Warning from './Warning'
 
 const Reviews = ({reviews}) => { //takes in the variable "reviews" given through RestaurantDetailsPage.jsx page which equals the selectedRestaurants.reviews state
     return (
-        <div className="row row-cols-3 mb-2">
+           <div>
 
+        <div className="row row-cols-3 mr-5 ml-5">
+            
             {reviews.map((review) =>{
                 return (
 
@@ -24,6 +28,7 @@ const Reviews = ({reviews}) => { //takes in the variable "reviews" given through
 
             
 
+        </div>
         </div>
     )
 }

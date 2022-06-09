@@ -3,6 +3,7 @@ import RestaurantFinder from '../apis/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
 import { useNavigate } from 'react-router-dom';
 import StarRating from './StarRating';
+import Warning from './Warning';
 
 //fetches the data from the API
 const RestaurantList = (props) => {
@@ -100,7 +101,7 @@ const RestaurantList = (props) => {
 
 
             </table> 
-            
+        
         </div>
     )
 }

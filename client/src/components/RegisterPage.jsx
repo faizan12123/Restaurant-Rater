@@ -74,23 +74,39 @@ const RegisterPage = ({setAuth}) => {
   }
   }
 
-  return <div className='container'> 
-      <h1 className='text-center my-5'>Register</h1>
+  return <div className='card-body container mt-5'> 
+      <h3 className="my-3 text-center"><i className="fa fa-lock"></i> Register</h3>
       <form onSubmit={onSubmitForm}>
-        {/*email input*/}
-        <input value = {email} onChange={e =>onChange(e)} type='email' name='email' placeholder='email' className='form-control my-3' />
+         {/*email input*/}
+      <div className="md-form font-weight-light">
+      <i className="fa fa-envelope prefix grey-text"></i>
+        <input value = {email} onChange={e =>onChange(e)} type='email' name='email' placeholder='Email' className='form-control' />
+        <label htmlFor="email">Your Email</label>
+        </div>
 
         {/*password input*/}
-        <input value = {password} onChange={e =>onChange(e)} type='password' name='password' placeholder='password' className='form-control my-3' />
+        <div className="md-form font-weight-light">
+        <i className="fa fa-lock prefix grey-text"></i>
+        <input value = {password} onChange={e =>onChange(e)} type='password' name='password' placeholder='Password' className='form-control' />
+        <label htmlFor="password">Your Password</label>
+        </div>
 
         {/*name input*/}
-        <input value = {name} onChange={e =>onChange(e)} type='text' name='name' placeholder='name' className='form-control my-3'/>
-
+        <div className="md-form font-weight-light">
+        <i className="fa fa-user prefix grey-text"></i>
+        <input value = {name} onChange={e =>onChange(e)} type='text' name='name' placeholder='Name' className='form-control'/>
+        <label htmlFor="name">Your Name</label>
+        </div>
         {/*submit button*/}
-        <button className='btn btn-success btn-block'>Submit</button>
+        <div className="text-center mt-4">
+              <button className="btn btn-success" type="submit">Submit</button>
+            </div>
       </form>
-      <Link to ='/login'>Already have an account? Click here to login!</Link>
+      <Link to ='/login' className="mb-5">Already have an account? Click here to login!</Link>
+      <div className="mt-3">
       <Warning/>
+      </div>
+     
   </div>;
 };
 
