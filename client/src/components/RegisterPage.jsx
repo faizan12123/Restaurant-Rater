@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import RestaurantFinder from '../apis/RestaurantFinder';
 import { Link } from 'react-router-dom';
 import {toast} from "react-toastify"
+import Warning from './Warning';
 
 const RegisterPage = ({setAuth}) => {
 
@@ -89,6 +90,7 @@ const RegisterPage = ({setAuth}) => {
         <button className='btn btn-success btn-block'>Submit</button>
       </form>
       <Link to ='/login'>Already have an account? Click here to login!</Link>
+      <Warning/>
   </div>;
 };
 
