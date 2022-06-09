@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {Link} from "react-router-dom"
 import {toast} from "react-toastify"
+import Warning from './Warning'
 
 
 const LoginPage = ({setAuth}) => {
@@ -183,7 +184,9 @@ const LoginPage = ({setAuth}) => {
             
             <Link to = '/register'>Don't have an account? Click here to register an account!</Link>
           </div>
+          <Warning/>
           </form>
+        
           
          
          
