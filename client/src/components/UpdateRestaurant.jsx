@@ -22,7 +22,7 @@ const UpdateRestaurant = (props) => {
         const fetchData = async() => {
             try {
                 const response = await RestaurantFinder.get(`/${id}`)
-                console.log(response.data.data)
+                // console.log(response.data.data)
                 setName(response.data.data.restaurant.name)
                 setLocation(response.data.data.restaurant.location)
                 setPriceRange(response.data.data.restaurant.price_range)
@@ -42,6 +42,7 @@ const UpdateRestaurant = (props) => {
             location: location,
             price_range: priceRange
         })
+        
         navigate("/home"); //makes the update page switch to the home page again after clicking the submit button
     }
 
