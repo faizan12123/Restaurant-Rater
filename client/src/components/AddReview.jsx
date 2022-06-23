@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {useParams, useNavigate } from 'react-router-dom'
 import { RestaurantsContext } from '../context/RestaurantsContext';
 import RestaurantFinder from "../apis/RestaurantFinder"
 import Warning from './Warning';
+import {toast} from "react-toastify"
 
 const AddReview = () => {
 
+    const navigate = useNavigate();
     const{addReview} = useContext(RestaurantsContext)
     const {id} = useParams()
     //useStates:
@@ -14,14 +16,31 @@ const AddReview = () => {
     const [rating, setRating] = useState("Rating")
 
 
+
     const handleSubmitReview = async (e) => {
+        e.preventDefault()
         try {
-            const response = await RestaurantFinder.post(`/${id}/addReview`,{ //post because the router in server.js says so
-                name: name,
-                review: reviewText,
-                rating: rating
-            }) 
-            console.log(response);
+            if (name == "") {
+                toast.error("Must add your name!")
+            }
+            if (reviewText == "") {
+                toast.error("Must enter a review!")
+            }
+            if (rating == "Rating") {
+                toast.error("Must add a rating!")
+            }
+
+            if ((name != "") && (reviewText != "") && (rating != "Rating")) {
+                const response = await RestaurantFinder.post(`/${id}/addReview`,{ //post because the router in server.js says so
+                    name: name,
+                    review: reviewText,
+                    rating: rating
+                }) 
+                console.log(response);
+                toast.success(name + "'s review added!")
+                navigate(`/restaurants`)
+                navigate(`/restaurants/${id}`)
+            }
         } catch (err) {
             console.log(err);
         }

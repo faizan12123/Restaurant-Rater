@@ -34,7 +34,7 @@ const LoginPage = ({setAuth}) => {
             if(parseRes.token) { //if there is a token generated
                 localStorage.setItem('token', parseRes.token) //storing the token in the local storage
                 setAuth(true)
-                toast.success("login successfull!")
+                toast.success("Login Successful!")
             } else {
                 setAuth(false)
                 toast.error(parseRes) //returning the error created in the login route in server.js
@@ -57,7 +57,7 @@ const LoginPage = ({setAuth}) => {
           if(parseRes.token) { //if there is a token generated
               localStorage.setItem('token', parseRes.token) //storing the token in the local storage
               setAuth(true)
-              toast.success("login successfull!")
+              toast.success("Login Successful!")
           } else {
               setAuth(false)
               toast.error(parseRes) //returning the error created in the login route in server.js
