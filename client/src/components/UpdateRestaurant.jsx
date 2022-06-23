@@ -8,6 +8,7 @@ import { useNavigate, useParams} from 'react-router-dom'
 import RestaurantFinder from '../apis/RestaurantFinder'
 import Back from './Back'
 import Warning from './Warning'
+import {toast} from "react-toastify"
 
 const UpdateRestaurant = (props) => {
     let navigate = useNavigate()
@@ -36,7 +37,16 @@ const UpdateRestaurant = (props) => {
 
     const handleSubmit = async (e) => { //function that runs when submit button is clicked
         e.preventDefault()
+        
+        if (name == "") {
+            toast.error("Must add a restaurant name!")
+        }
+        if (location == "") {
+            toast.error("Must enter a location!")
+        }
+    
 
+        if ((name !="") && (location != "")) {
         const updatedRestaurant = await RestaurantFinder.put(`/${id}`, {
             name:name, 
             location: location,
@@ -44,6 +54,8 @@ const UpdateRestaurant = (props) => {
         })
         
         navigate("/home"); //makes the update page switch to the home page again after clicking the submit button
+        toast.success(name + " updated successfully!")
+    }
     }
 
 
