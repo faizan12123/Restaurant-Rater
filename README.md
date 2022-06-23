@@ -1,10 +1,5 @@
 # Restaurant Rater
 
-## Author
-|   Name  
-| :------------: 
-| Faizan Hussain
-
 ## Project Description
 
 * Full-stack web application that allows users to register an account, sign in, add/ update/ delete restaurants, and
@@ -12,6 +7,16 @@ review/ rate those restaurants.
 * Database created in PostgreSQL, user interface created using React, and routes/ middleware/ backend created
 using ExpressJs and Node.js
 * Users are authorized to access the application using JSON web token.
+
+## Hosting
+
+* Link to Restaurant Rater: https://faizansrestaurantrater.com
+* Hosted on AWS EC2 instance.
+* Used PM2 as a process manager to handle running node for our backend server. PM2 will be responsible for restarting the App if/when it crashes.
+* Used NGINX for web serving.
+* Enabled Firewall.
+* Used Let's Encrypt to generate SSL certificates and configure NGINX to use the certificates to redirect http traffic to HTTPS.
+
 
 ## SQL Commands to run on local system
 
@@ -62,3 +67,8 @@ user_password VARCHAR(255) NOT NULL
 |npm i jsonwebtoken |Used to generate our json web token to verify it|
 |npm i bcrypt |Encypt user passwords so that it does not just show the password in the database|
 |npm i react-toastify|Used for displaying notifications|
+
+## Author
+|   Name  
+| :------------: 
+| Faizan Hussain
