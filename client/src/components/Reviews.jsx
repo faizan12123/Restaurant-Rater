@@ -7,15 +7,16 @@ const Reviews = ({reviews}) => { //takes in the variable "reviews" given through
     return (
            <div>
 
-        <div className="row row-cols-3 mr-5 ml-5">
+        <div className="row row-cols-1">
             
             {reviews.map((review) =>{
                 return (
 
                 //review card
-                <div key={review.id} className="card text-white bg-info mb-3 mr-4" style = {{maxWidth: "30%"}}>
-                <div className="card-header d-flex justify-content-between">
-                    <span>{review.name}</span> 
+                <div key={review.id} className="card text-white bg-info mb-3">
+                <div className="card-header text-center">
+                    <span>{review.name} </span>
+                    <p></p>
                     <span><StarRating rating = {review.rating}/></span>
                 </div>
                 <div className='card-body'>
