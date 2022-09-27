@@ -15,5 +15,9 @@ const baseURL =
     : "http://localhost:3001/api/v1/restaurants";
 
 export default axios.create({
+  headers: {
+    token: localStorage.token},
+    
     baseURL: baseURL,
+
 }) //creating an axious instance

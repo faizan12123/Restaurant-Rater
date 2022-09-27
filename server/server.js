@@ -7,6 +7,8 @@ const db = require("./db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("./utils/jwtGenerator")
 const jwt = require("jsonwebtoken");
+const validInfo = require("./middleware/validInfo");
+const authorize = require("./middleware/authorize");
 
 // function jwtGenerator(user_id) {
 //     const payload = {
@@ -34,14 +36,13 @@ app.use((req,res, next) => {
 
 app.use(cors()); //allows fetch requests from other domains(allows our front-end on a different local host to send a request to this local host)
 app.use(express.json()) //it takes the info inside of the body and attaches it to the req object. it turns json object into js object
-
-
+let userLoginID = ""
 
 
 //********** Restaurant Finder Routes ************
 
 //get all restaurants and it's associated average rating and number of reviews
-app.get('/api/v1/restaurants/home', async (req, res) => {
+app.get('/api/v1/restaurants/home',  async (req, res) => {
 
     try{
         const restaurantRatingsData = await db.query("select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id;")
@@ -82,7 +83,7 @@ app.post("/api/v1/restaurants", async (req, res) => {
     console.log(req.body);
 
     try{
-        const results = await db.query("insert into restaurants (name, location, price_range) values ($1, $2, $3) returning *", [req.body.name, req.body.location, req.body.price_range])
+        const results = await db.query("insert into restaurants (name, location, price_range, creator) values ($1, $2, $3, $4) returning *", [req.body.name, req.body.location, req.body.price_range, req.body.creator])
         console.log(results);
 
         res.status(201).json ({
@@ -116,7 +117,7 @@ app.post("/api/v1/restaurants/:id/addReview", async(req,res) => {
 })
 
 //update restaurants
-app.put("/api/v1/restaurants/:id",  async (req,res) => {
+app.put("/api/v1/restaurants/:id", async (req,res) => {
     try {
 const results = await db.query(
     "UPDATE restaurants SET name = $1, location = $2, price_range = $3 where id = $4 returning*", [req.body.name, req.body.location, req.body.price_range, req.params.id])
@@ -134,9 +135,9 @@ console.log(results);
 })
 
 //delete restaurant
-app.delete("/api/v1/restaurants/:id", (req,res) => {
+app.delete("/api/v1/restaurants/:id", async (req,res) => {
     try {
-        const results = db.query("DELETE FROM restaurants where id = $1", [req.params.id])
+        const results = await db.query("DELETE FROM restaurants where id = $1", [req.params.id])
         
         res.status(204).json({
             status: "success"
@@ -152,35 +153,9 @@ app.delete("/api/v1/restaurants/:id", (req,res) => {
 
 //********************************** login page, register page and authentication routes/middleware *******************************
 
-//middleware for registration and login veryfication
-app.use((req,res, next) => {
-    const { email, name, password } = req.body; //destructure
-  
-    function validEmail(userEmail) {
-      return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail); //checks if email is valid format
-    }
-  
-    if (req.path === "/api/v1/restaurants/register") { //if we go to the register page
-      if (![email, name, password].every(Boolean)) {//if any input field is empty, throw error
-        return res.status(401).json("Missing Credentials");
-      } else if (!validEmail(email)) { //if email is not in valid format, throw error
-        return res.status(401).json("Invalid Email");
-      }
-
-
-    } else if (req.path === "/api/v1/restaurants/login") { //if we go to the login page
-      if (![email, password].every(Boolean)) { //if any input field is empty, throw error
-        return res.status(401).json("Missing Credentials");
-      } else if (!validEmail(email)) { //if email is not in valid format, throw error
-        return res.status(401).json("Invalid Email");
-      }
-    }
-  
-    next();
-  })
 
 //registering route
-app.post("/api/v1/restaurants/register", async (req, res) => {
+app.post("/api/v1/restaurants/register",validInfo, async (req, res) => {
     try {
 
         //1. destructure the req.body (name, email, password)
@@ -216,7 +191,7 @@ app.post("/api/v1/restaurants/register", async (req, res) => {
 
 
 //login route
-app.post("/api/v1/restaurants/login", async (req, res) => {
+app.post("/api/v1/restaurants/login", validInfo, async (req, res) => {
     try {
 
         //1. destructure the req.body
@@ -224,13 +199,13 @@ app.post("/api/v1/restaurants/login", async (req, res) => {
 
         //2. check if user doesn't exist (if not then we throw error)
         const user = await db.query("SELECT * from users where user_email = $1", [email])
-
+        userLoginID = user
         if(user.rows.length === 0) {
             return res.status(401).json("Password or Email is incorrect")
         }
 
         //3. check if incoming password is the same as the database password
-        const validPassword = await bcrypt.compare(password, user.rows[0].user_password) //Comparing inputed password with the password in the database
+        const validPassword = await bcrypt.compare(password, user.rows[0].user_password) //Comparing inputted password with the password in the database
 
         if(!validPassword) {
             return res.status(401).json("Password or Email is incorrect")
@@ -238,7 +213,7 @@ app.post("/api/v1/restaurants/login", async (req, res) => {
 
         //4. give them the jwt token
         const token = jwtGenerator(user.rows[0].user_id)
-
+        
         res.json({token})
 
     } catch (err) {
@@ -248,32 +223,10 @@ app.post("/api/v1/restaurants/login", async (req, res) => {
 
 
 
-//middleware for authorization to authorize the person. Making sure the token is legit
-app.use((req,res, next) => { 
-
-    const jwtToken = req.header("token") //get token from header
-
-        if(!jwtToken) { //if there is no jwt token then the user is not authorized to access that entity
-            return res.status(403).json("Not Authorized")
-        }
-
-    try {
-        const verify = jwt.verify(jwtToken, process.env.jwtSecret) //checks to see if the jwt token is valid, if it is then we can return a payload that we can use within our routes
-
-        req.user = verify.user; //user is from the jwtGenerator.js file
-
-    } catch (err) {
-        console.log(err.message)
-        return res.status(403).json("Not Authorized")
-    }
-    next()
-})
-
-
 //authorization route
-app.post("/api/v1/restaurants/is-verify", async (req,res) => {
+app.post("/api/v1/restaurants/is-verify", authorize, async (req,res) => {
     try {
-        res.json(true) //if token is valid then, return true statement that the user's token is valid
+        res.json({verified: true}) //if token is valid then, return true statement that the user's token is valid
     } catch (err) {
         console.log(err.message)
         res.status(500).send("Server Error")
@@ -284,8 +237,8 @@ app.post("/api/v1/restaurants/is-verify", async (req,res) => {
 //route for getting authorized user's information when on home page
 app.post('/api/v1/restaurants/home', async (req, res) => {
     try {
-      const user = await db.query("SELECT user_name FROM users WHERE user_id = $1",[req.user]); //req.user has the payload (from authorization middleware)
-      res.json(user.rows[0]);
+      const user = await db.query("SELECT user_name,user_id FROM users WHERE user_id = $1",[userLoginID.rows[0].user_id]); //req.user has the payload (from authorization middleware)
+      res.json({userName:user.rows[0], userId:user.rows[1]});
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {useParams, useNavigate } from 'react-router-dom'
 import { RestaurantsContext } from '../context/RestaurantsContext';
 import RestaurantFinder from "../apis/RestaurantFinder"
@@ -15,14 +15,27 @@ const AddReview = () => {
     const [reviewText, setReviewText] = useState("")
     const [rating, setRating] = useState("Rating")
 
+    const getProfile = async () => {
+      
+        try {
+            const response = await RestaurantFinder.post("home")
 
+            setName(response.data.userName.user_name)
+            
+
+        } catch (err) {
+            console.error(err.message)
+        }
+  
+    }
+
+    useEffect(() => {
+        getProfile()
+    }, [])
 
     const handleSubmitReview = async (e) => {
         e.preventDefault()
         try {
-            if (name == "") {
-                toast.error("Must add your name!")
-            }
             if (reviewText == "") {
                 toast.error("Must enter a review!")
             }
@@ -48,17 +61,11 @@ const AddReview = () => {
 
     return (
         <div>
+            <h1 className="font-weight-light display-5 text-center">Add a Review!</h1>
             <form action ="">
                 <div className="form-row">
-
-                    {/*Name of the user input field*/}
-                    <div className="form-group col-8">
-                        <label htmlFor="name">Name</label>
-                        <input value = {name} onChange={e=> setName(e.target.value)} id ="name" placeholder="Name" type="text" className="form-control" />
-                    </div>
-
                     {/*rating drop down list for the restaurant*/}
-                    <div className="form-group col-4">
+                    <div className="form-group row">
                         <label htmlFor="rating">Rating</label>
                         <select value = {rating} onChange={e=> setRating(e.target.value)} id="rating" className='custom-select'>
                             <option disabled>Rating</option>
@@ -69,13 +76,14 @@ const AddReview = () => {
                             <option value="5">5</option>
                         </select>
                     </div>
-                </div>
-
+                    </div>
+            
                 {/*Review input field*/}
-                <div className="form-group">
+                <div className="form-group row">
                     <label htmlFor="Review">Review</label>
                     <textarea value = {reviewText} onChange={e=> setReviewText(e.target.value)} id="Review" className="form-control"></textarea>
                 </div>
+                
 
                 {/*submit button for the review*/}
                 <button onClick={handleSubmitReview} type="submit" className="btn btn-info mb-3">Submit</button>

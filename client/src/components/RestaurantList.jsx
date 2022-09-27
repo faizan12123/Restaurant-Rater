@@ -1,14 +1,29 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import RestaurantFinder from '../apis/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
 import { useNavigate } from 'react-router-dom';
 import StarRating from './StarRating';
 import Warning from './Warning';
+import { toast } from 'react-toastify';
 
 //fetches the data from the API
 const RestaurantList = (props) => {
+    const [creator, setCreator] = useState("")
+    const [isCreator, setIsCreator] = useState(false)
+    // const [restaurantCreator, setRestaurantCreator] = useState("")
 
+    const getProfile = async () => {
+        try {
+            const response = await RestaurantFinder.post("home")
+            setCreator(response.data.userName.user_id)
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
 
+    useEffect(() => {
+        getProfile()
+    }, [])
         const {restaurants, setRestaurants} = useContext(RestaurantsContext) //{restaurant, setRestaurants}  comes from "value" from the RestaurantsContext.provider 
 
         let navigate = useNavigate()
@@ -17,8 +32,10 @@ const RestaurantList = (props) => {
         useEffect(() => {
             const fetchData = async () => {
                 try {
-                    const response = await RestaurantFinder.get("/home") //adds a "/" to the baseURL from the RestaurantFinder.js axiom function
+                    const response = await RestaurantFinder.get("/home") //adds a "/home" to the baseURL from the RestaurantFinder.js axiom function
                     setRestaurants(response.data.data.restaurant); //to set our state and store our restaurants within our state
+                    // console.log(response.data.data.restaurant[0].creator)
+                    
                 } catch (err) {
                     console.log(err);
                 }
@@ -27,23 +44,40 @@ const RestaurantList = (props) => {
             fetchData(); //we create a fetchData function to return something because we don't want to directly return something within the useEffect function
         }, []) //passing an empty dependency array means that the useEffect hook will only run when the component mounts to the screen; without it, it would run every time the component re-renders
 
+
+    useEffect(() => {
+        getProfile()
+        // isCreatorFunc()
+    }, [])
+    
+
         //function when delete button is clicked
-        const handleDelete = async (e, id) => {
+        const handleDelete = async (e, id, restaurantCreator, restaurantName) => {
             e.stopPropagation() //without this, clicking delete button would just prompt to the restaurant detail page since the detail page is set to clicking anywhere on the row
             try {
-                const response = await RestaurantFinder.delete(`/${id}`);
-                setRestaurants(restaurants.filter(restaurant => {
-                    return restaurant.id !==id //if this is true, then we will add that restaurant that we itrerated over back to the restaurants from context, so when restaurants.id does not  = the id that we want to delete, we will add that to the array but if they do match, then we leave that out
+                if (restaurantCreator == creator) {
+                    toast.success(restaurantName + " deleted!")
+                    const response = await RestaurantFinder.delete(`/${id}`);
+                    setRestaurants(restaurants.filter(restaurant => {
+                    return restaurant.id !==id //if this is true, then we will add that restaurant that we iterated over back to the restaurants from context, so when restaurants.id does not  = the id that we want to delete, we will add that to the array but if they do match, then we leave that out
                 }))
+                } else {
+                    toast.error("You can only delete a restaurant you added!")
+                }
             } catch (err) {
                 console.log(err);
             }
         }
-
+        
         //function for when update button is clicked
-        const handleUpdate = (e, id) => {
+        const handleUpdate = (e, id, restaurantCreator) => {
             e.stopPropagation() //without this, clicking update button would just prompt to the restaurant detail page since the detail page is set to clicking anywhere on the row
-            navigate(`/restaurants/${id}/update`) //when we click the update button it prompts up that url
+            if (restaurantCreator == creator) {
+                        navigate(`/restaurants/${id}/update`)
+                    } else {
+                        toast.error("You can only update a restaurant you added!")
+                    }
+             //when we click the update button it prompts up that url
         }
 
         //function so that when u click on a row it navigates to the detail page URL
@@ -91,9 +125,9 @@ const RestaurantList = (props) => {
                             <td>{restaurant.location}</td>
                             <td>{"$".repeat(restaurant.price_range)}</td> {/*will create a dollar sign for every number in the price_range*/}
                             <td>{renderRating(restaurant)}</td>
-                            <td><button  onClick = {(e) => handleUpdate(e, restaurant.id)}className="btn btn-warning">Update</button></td>
-                            <td><button onClick = {(e) => handleDelete(e, restaurant.id)} //we pass an arrow function instead of the function itself because without it, code will think to just run the function right away, but we only want to run it once the button is actually clicked so we want it to run a reference to the function not the functtion itself
-                            className="btn btn-danger">Delete</button></td>
+                            <td><button onClick = {(e) => handleUpdate(e, restaurant.id, restaurant.creator)}className="btn btn-warning" id="editBtn" >Update</button></td>
+                            <td><button onClick = {(e) => handleDelete(e, restaurant.id, restaurant.creator, restaurant.name)} //we pass an arrow function instead of the function itself because without it, code will think to just run the function right away, but we only want to run it once the button is actually clicked so we want it to run a reference to the function not the functtion itself
+                            className="btn btn-danger" >Delete</button></td>
                         </tr>
                         );
                     })} 

@@ -1,0 +1,6 @@
+projectKey=Restaurant-Rater
+serverUrl=http://localhost:9000
+serverVersion=9.6.1.59531
+dashboardUrl=http://localhost:9000/dashboard?id=Restaurant-Rater
+ceTaskId=AYMv2MozWiZlMBQ-k9bG
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYMv2MozWiZlMBQ-k9bG
