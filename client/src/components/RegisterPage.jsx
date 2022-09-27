@@ -77,6 +77,13 @@ const RegisterPage = ({setAuth}) => {
   return <div className='card-body container mt-5'> 
       <h3 className="my-3 text-center"><i className="fa fa-lock"></i> Register</h3>
       <form onSubmit={onSubmitForm}>
+        {/*name input*/}
+        <div className="md-form font-weight-light">
+        <i className="fa fa-user prefix grey-text"></i>
+        <input value = {name} onChange={e =>onChange(e)} type='text' name='name' placeholder='Name' className='form-control'/>
+        <label htmlFor="name">Your Name</label>
+        </div>
+
          {/*email input*/}
       <div className="md-form font-weight-light">
       <i className="fa fa-envelope prefix grey-text"></i>
@@ -88,15 +95,13 @@ const RegisterPage = ({setAuth}) => {
         <div className="md-form font-weight-light">
         <i className="fa fa-lock prefix grey-text"></i>
         <input value = {password} onChange={e =>onChange(e)} type='password' name='password' placeholder='Password' className='form-control' />
-        <label htmlFor="password">Your Password</label>
+        <label htmlFor="password">Your Password </label>
+        <p className='text-danger'>Password must contain: 
+        <li>6-16 characters</li>
+        <li>At least one number</li>
+        <li>At least one special character</li></p>
         </div>
 
-        {/*name input*/}
-        <div className="md-form font-weight-light">
-        <i className="fa fa-user prefix grey-text"></i>
-        <input value = {name} onChange={e =>onChange(e)} type='text' name='name' placeholder='Name' className='form-control'/>
-        <label htmlFor="name">Your Name</label>
-        </div>
         {/*submit button*/}
         <div className="text-center mt-4">
               <button className="btn btn-success" type="submit">Submit</button>

@@ -11,7 +11,7 @@ import { RestaurantsContext } from '../context/RestaurantsContext'
 const RestaurantDetailPage = () => {
     const{id} = useParams()
     const {selectedRestaurant, setSelectedRestaurant} = useContext(RestaurantsContext)
-
+    
     useEffect(() =>{
         const fetchData = async () => {
 
@@ -34,7 +34,7 @@ const RestaurantDetailPage = () => {
                 <Back/>
                 {selectedRestaurant && (
                 <>
-                <h1 className='text-center display-1'>{selectedRestaurant.restaurant.name}</h1>
+                <h1 className='font-weight-light display-3 text-center'>{selectedRestaurant.restaurant.name}</h1>
                 <div className="text-center">
                     <StarRating rating = {selectedRestaurant.restaurant.average_rating} />
                     <span className="span text-warning ml-1">

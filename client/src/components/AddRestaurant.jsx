@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import RestaurantFinder from "../apis/RestaurantFinder"
 import { RestaurantsContext } from '../context/RestaurantsContext';
 import {toast} from "react-toastify"
@@ -8,7 +8,22 @@ const AddRestaurant = () => {
     const [name, setName] = useState("")
     const [location, setLocation] = useState("")
     const [priceRange, setPriceRange] = useState("Price Range") //sets the pre-set price_range box to say "Price Range"
+    const [creator, setCreator] = useState("")
 
+    //function for getting current user_id
+    const getProfile = async () => {
+      
+        try {
+            const response = await RestaurantFinder.post("home")
+            setCreator(response.data.userName.user_id)
+        } catch (err) {
+            console.error(err.message)
+        }
+  
+    }
+    useEffect(() => {
+        getProfile()
+    }, [])
     //function that runs when submit button is clicked
     const handleSubmit = async (e) => {
         e.preventDefault() //prevents page from reloading which is bad in React because it makes u lose the state
@@ -27,7 +42,8 @@ const AddRestaurant = () => {
                 const response = await RestaurantFinder.post("/",{ //post because the router in server.js says so
                     name: name,
                     location: location,
-                    price_range: priceRange //our backend DB is expecting price_range so that is why it is with "_" on the left
+                    price_range: priceRange, //our backend DB is expecting price_range so that is why it is with "_" on the left
+                    creator: creator
                 }) 
                 addRestaurants(response.data.data.restaurant) //adds the new restaurant to the existing list of restaurants in the "restaurants" context, which updates the existing displayed restaurants since the table displays the values from the "restaurants" context
                 setName("")
