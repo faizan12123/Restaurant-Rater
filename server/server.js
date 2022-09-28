@@ -7,8 +7,7 @@ const db = require("./db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("./utils/jwtGenerator")
 const jwt = require("jsonwebtoken");
-const validInfo = require("./middleware/validInfo");
-const authorize = require("./middleware/authorize");
+
 
 // function jwtGenerator(user_id) {
 //     const payload = {
@@ -153,9 +152,40 @@ app.delete("/api/v1/restaurants/:id", async (req,res) => {
 
 //********************************** login page, register page and authentication routes/middleware *******************************
 
+//middleware for registration and login veryfication
+app.use((req, res, next) => {
+    const { email, name, password } = req.body; //destructure
+  
+    function validEmail(userEmail) {
+      return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail); //checks if email is valid format
+    }
+    function validPassword(userPassword) {
+      return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(userPassword)
+    }
+  
+    if (req.path === "/api/v1/restaurants/register") { //if we go to the register page
+      if (![email, name, password].every(Boolean)) {//if any input field is empty, throw error
+        return res.status(401).json("Missing Credentials");
+      } else if (!validEmail(email)) { //if email is not in valid format, throw error
+        return res.status(401).json("Invalid Email");
+      } else if (!validPassword(password)) {
+        return res.status(401).json("Invalid Password Format");
+      }
+
+
+    } else if (req.path === "/api/v1/restaurants/login") { //if we go to the login page
+      if (![email, password].every(Boolean)) { //if any input field is empty, throw error
+        return res.status(401).json("Missing Credentials");
+      } else if (!validEmail(email)) { //if email is not in valid format, throw error
+        return res.status(401).json("Invalid Email");
+      }
+    }
+  
+    next();
+})
 
 //registering route
-app.post("/api/v1/restaurants/register",validInfo, async (req, res) => {
+app.post("/api/v1/restaurants/register", async (req, res) => {
     try {
 
         //1. destructure the req.body (name, email, password)
@@ -191,7 +221,7 @@ app.post("/api/v1/restaurants/register",validInfo, async (req, res) => {
 
 
 //login route
-app.post("/api/v1/restaurants/login", validInfo, async (req, res) => {
+app.post("/api/v1/restaurants/login", async (req, res) => {
     try {
 
         //1. destructure the req.body
@@ -221,10 +251,28 @@ app.post("/api/v1/restaurants/login", validInfo, async (req, res) => {
     }
 })
 
+//middleware for authorization to authorize the person. Making sure the token is legit
+app.use((req, res, next) => {
+    const jwtToken = req.header("token") //get token from header
 
+        if(!jwtToken) { //if there is no jwt token then the user is not authorized to access that entity
+            return res.status(403).json("Not Authorized")
+        }
+
+    try {
+        const verify = jwt.verify(jwtToken, process.env.jwtSecret) //checks to see if the jwt token is valid, if it is then we can return a payload that we can use within our routes
+
+        req.user = verify.user; //user is from the jwtGenerator.js file
+
+    } catch (err) {
+        console.log(err.message)
+        return res.status(403).json("Not Authorized")
+    }
+    next()
+})
 
 //authorization route
-app.post("/api/v1/restaurants/is-verify", authorize, async (req,res) => {
+app.post("/api/v1/restaurants/is-verify", async (req,res) => {
     try {
         res.json({verified: true}) //if token is valid then, return true statement that the user's token is valid
     } catch (err) {
