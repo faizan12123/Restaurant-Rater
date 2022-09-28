@@ -15,7 +15,7 @@ CREATE TABLE restaurants (
 	location VARCHAR (50) NOT NULL,
 	price_range INT NOT NULL check(price_range >=1 and price_range <=5)
 );
-alter table restaurants add creator UUID NOT NULL default '7a9eaf29-f89d-41f0-9e14-92b4e03e736f' REFERENCES users(user_id);
+alter table restaurants add creator UUID NOT NULL default 'ae7d3dce-0e9b-4475-97ac-b6682ac52cb5' REFERENCES users(user_id);
 
 
 INSERT INTO restaurants(name, location, price_range) values ('wendys', 'miami', 4);
