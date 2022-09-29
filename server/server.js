@@ -206,7 +206,7 @@ app.post("/api/v1/restaurants/register", async (req, res) => {
 
         //4. Enter the new user inside our database
         const newUser = await db.query ("INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *", [name, email, bcryptPassword])
-        
+        userLoginID = newUser
 
         //5. generating our jwt token
         const token = jwtGenerator(newUser.rows[0].user_id); //passing in the new user's user_id to the jason web token generator
