@@ -7,7 +7,8 @@ const db = require("./db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("./utils/jwtGenerator")
 const jwt = require("jsonwebtoken");
-
+// const authorize = require("./middleware/authorize")
+// const validInfo = require("./middleware/validinfo")
 
 // function jwtGenerator(user_id) {
 //     const payload = {

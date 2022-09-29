@@ -21,6 +21,7 @@ const Home = ({setAuth}) => {
 
         } catch (err) {
             console.error(err.message)
+            window.location.reload(false);
         }
     }
     useEffect(() => {
