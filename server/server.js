@@ -5,18 +5,18 @@ const app = express();
 const morgan = require("morgan");
 const db = require("./db");
 const bcrypt = require("bcrypt");
-const jwtGenerator = require("./utils/jwtGenerator")
+// const jwtGenerator = require("./utils/jwtGenerator")
 const jwt = require("jsonwebtoken");
 // const authorize = require("./middleware/authorize")
 // const validInfo = require("./middleware/validinfo")
 
-// function jwtGenerator(user_id) {
-//     const payload = {
-//         user: user_id
-//     }
+function jwtGenerator(user_id) {
+    const payload = {
+        user: user_id
+    }
 
-//     return jwt.sign(payload, process.env.jwtSecret, {expiresIn: "1hr" })
-// }
+    return jwt.sign(payload, process.env.jwtSecret, {expiresIn: "1hr" })
+}
 
 
 //*******************middleware*************
