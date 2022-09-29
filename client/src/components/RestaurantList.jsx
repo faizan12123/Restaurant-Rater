@@ -125,9 +125,9 @@ const RestaurantList = (props) => {
                             <td>{restaurant.location}</td>
                             <td>{"$".repeat(restaurant.price_range)}</td> {/*will create a dollar sign for every number in the price_range*/}
                             <td>{renderRating(restaurant)}</td>
-                            <td><button onClick = {(e) => handleUpdate(e, restaurant.id, restaurant.creator)}className="btn btn-warning" id="editBtn" >Update</button></td>
+                            <td><button onClick = {(e) => handleUpdate(e, restaurant.id, restaurant.creator)} id="editBtn" className={"btn btn-warning " + (restaurant.creator != creator ? 'disabled' : '')} >Update</button></td>
                             <td><button onClick = {(e) => handleDelete(e, restaurant.id, restaurant.creator, restaurant.name)} //we pass an arrow function instead of the function itself because without it, code will think to just run the function right away, but we only want to run it once the button is actually clicked so we want it to run a reference to the function not the functtion itself
-                            className="btn btn-danger" >Delete</button></td>
+                            className={"btn btn-danger " + (restaurant.creator != creator ? 'disabled' : '')} >Delete</button></td>
                         </tr>
                         );
                     })} 
