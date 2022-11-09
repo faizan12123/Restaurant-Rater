@@ -153,7 +153,7 @@ app.delete("/api/v1/restaurants/:id", async (req,res) => {
 
 //********************************** login page, register page and authentication routes/middleware *******************************
 
-//middleware for registration and login veryfication
+//middleware for registration and login verification
 app.use((req, res, next) => {
     const { email, name, password } = req.body; //destructure
   

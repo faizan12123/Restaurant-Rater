@@ -11,6 +11,7 @@ const Home = ({setAuth}) => {
     
 
     const [name, setName] = useState("")
+    const [mobile, setMobile] = useState("")
 
     const getProfile = async () => {
       
@@ -26,6 +27,7 @@ const Home = ({setAuth}) => {
     }
     useEffect(() => {
         getProfile()
+        setMobile(window.innerWidth < 600)
     }, []) //adding the [] makes sure that it ends the requests once it is rendered
     
     const logout = async (e) => {
@@ -35,9 +37,10 @@ const Home = ({setAuth}) => {
         toast.success("Logged out successfully!")
     }
 
+    // let test =  mobile ? "mr-5 mt-2 mb-5" : "mr-5 ml-5 mt-2 mb-5";
     
     return (
-        <div className="mr-5 ml-5 mt-2 mb-5">
+        <div className={mobile ? "mr-5 mt-2 mb-5" : "mr-5 ml-5 mt-2 mb-5"}>
             <button onClick={(e) => logout(e)} className='btn btn-info'>Logout {name}</button>
             <Header/>
             <AddRestaurant/>
