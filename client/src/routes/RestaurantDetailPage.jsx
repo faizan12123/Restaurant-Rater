@@ -30,11 +30,11 @@ const RestaurantDetailPage = () => {
 
     return (
         
-            <div className="mr-5 ml-5 mt-2 mb-5">
+            <div>
                 <Back/>
                 {selectedRestaurant && (
                 <>
-                <h1 className='font-weight-light display-3 text-center'>{selectedRestaurant.restaurant.name}</h1>
+                <p className='big-title'>{selectedRestaurant.restaurant.name}</p>
                 <div className="text-center">
                     <StarRating rating = {selectedRestaurant.restaurant.average_rating} />
                     <span className="span text-warning ml-1">

@@ -3,6 +3,7 @@ import RestaurantFinder from '../apis/RestaurantFinder';
 import { Link } from 'react-router-dom';
 import {toast} from "react-toastify"
 import Warning from './Warning';
+import './style/Login.css'
 
 const RegisterPage = ({setAuth}) => {
 
@@ -74,44 +75,32 @@ const RegisterPage = ({setAuth}) => {
   }
   }
 
-  return <div className='card-body container mt-5'> 
-      <h3 className="my-3 text-center"><i className="fa fa-lock"></i> Register</h3>
-      <form onSubmit={onSubmitForm}>
-        {/*name input*/}
-        <div className="md-form font-weight-light">
-        <i className="fa fa-user prefix grey-text"></i>
-        <input value = {name} onChange={e =>onChange(e)} type='text' name='name' placeholder='Name' className='form-control'/>
-        <label htmlFor="name">Your Name</label>
-        </div>
-
-         {/*email input*/}
-      <div className="md-form font-weight-light">
-      <i className="fa fa-envelope prefix grey-text"></i>
-        <input value = {email} onChange={e =>onChange(e)} type='email' name='email' placeholder='Email' className='form-control' />
-        <label htmlFor="email">Your Email</label>
-        </div>
-
-        {/*password input*/}
-        <div className="md-form font-weight-light">
-        <i className="fa fa-lock prefix grey-text"></i>
-        <input value = {password} onChange={e =>onChange(e)} type='password' name='password' placeholder='Password' className='form-control' />
-        <label htmlFor="password">Your Password </label>
-        <p className='text-danger'>Password must contain: 
+  return<div className="login-form-container">
+<form onSubmit={onSubmitForm} class="login-form">
+  <h2><i className="fa fa-lock"></i> Register</h2>
+  <div class="form-group">
+    <label for="text"><i className="fa fa-person"></i> Name</label>
+    <input  value = {name} onChange={e =>onChange(e)} name = 'name' type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter name"/>
+  </div>
+  <div class="form-group">
+    <label for="email"><i className="fa fa-envelope"></i> Email address</label>
+    <input value = {email} onChange = {e => onChange(e)} name = 'email' type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+  </div>
+  <div class="form-group">
+    <label for="password"><i className="fa fa-lock"></i> Password</label>
+    <input value = {password} onChange = {e => onChange(e)} type="password" name = 'password' class="form-control" id="password" placeholder="Password"/>
+  </div>
+  <p className='text-danger'>Password must contain: 
         <li>6-16 characters</li>
         <li>At least one number</li>
-        <li>At least one special character</li></p>
-        </div>
-
-        {/*submit button*/}
-        <div className="text-center mt-4">
-              <button className="btn btn-success" type="submit">Submit</button>
-            </div>
-      </form>
-      <Link to ='/login' className="mb-5">Already have an account? Click here to login!</Link>
-      <div className="mt-3">
-      <Warning/>
-      </div>
-     
+        <li>At least one special character</li>
+  </p>
+  <button type="submit" class="form-button">Register</button>
+  <div class="form-group">
+    <p class="register-link"><Link to ='/login' className="mb-5">Already have an account? Click here to login!</Link></p>
+  </div>
+  <Warning/>
+</form>
   </div>;
 };
 

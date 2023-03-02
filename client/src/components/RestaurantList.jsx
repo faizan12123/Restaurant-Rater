@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import StarRating from './StarRating';
 import Warning from './Warning';
 import { toast } from 'react-toastify';
+import './style/RestaurantList.css'
 
 //fetches the data from the API
 const RestaurantList = (props) => {
     const [creator, setCreator] = useState("")
     const [isCreator, setIsCreator] = useState(false)
+
     // const [restaurantCreator, setRestaurantCreator] = useState("")
 
     const getProfile = async () => {
@@ -99,44 +101,34 @@ const RestaurantList = (props) => {
         }
 
     return (
-        <div className='list-group'>
-            {/*dark is gonna make it a dark background; table-hover makes it so that when u hover over a restaurant row, it highlights it*/}
-            <table className="table table-hover table-dark">
-
-
-                <thead> {/*makes the row of headers*/}
-                    <tr className="bg-info"> {/*makes the top row blue*/}
-                        <th scope = "col">Restaurant</th>
-                        <th scope = "col">Location</th>
-                        <th scope = "col">Price Range</th>
-                        <th scope = "col">Ratings</th>
-                        <th scope = "col">Edit</th>
-                        <th scope = "col">Delete</th>
-                    </tr>
-                </thead>
-
-
-                <tbody>
-                    {restaurants && restaurants.map(restaurant => { /*each restaurant(the parameter) is gonna represent a restaurant we are iterating over*/
-                    /*"restaurant &&"means that it will only do the mapping if the restaurants data has properly been fetched from DB*/
-                        return(
-                        <tr onClick={() => handleRestaurantSelect(restaurant.id)} key = {restaurant.id}>
-                            <td>{restaurant.name}</td>
-                            <td>{restaurant.location}</td>
-                            <td>{"$".repeat(restaurant.price_range)}</td> {/*will create a dollar sign for every number in the price_range*/}
-                            <td>{renderRating(restaurant)}</td>
-                            <td><button onClick = {(e) => handleUpdate(e, restaurant.id, restaurant.creator)} id="editBtn" className={"btn btn-warning " + (restaurant.creator != creator ? 'disabled' : '')} >Update</button></td>
-                            <td><button onClick = {(e) => handleDelete(e, restaurant.id, restaurant.creator, restaurant.name)} //we pass an arrow function instead of the function itself because without it, code will think to just run the function right away, but we only want to run it once the button is actually clicked so we want it to run a reference to the function not the functtion itself
-                            className={"btn btn-danger " + (restaurant.creator != creator ? 'disabled' : '')} >Delete</button></td>
-                        </tr>
-                        );
-                    })} 
-                </tbody> 
-
-
-            </table> 
-        
-        </div>
+        <div className = "card-container">
+            {restaurants && restaurants.map(restaurant => { /*each restaurant(the parameter) is gonna represent a restaurant we are iterating over*/
+            return (
+            <div className="card" onClick={() => handleRestaurantSelect(restaurant.id)} key = {restaurant.id}>
+                <div className="card-header">
+                    <h2 className="card-title">{restaurant.name}</h2>
+                    <div className="card-buttons">
+                        <button onClick = {(e) => handleUpdate(e, restaurant.id, restaurant.creator)} id="editBtn" className={(restaurant.creator != creator ? 'disabled-edit-button' : 'edit-button')}>Edit</button>
+                        <button button onClick = {(e) => handleDelete(e, restaurant.id, restaurant.creator, restaurant.name)} className={(restaurant.creator != creator ? 'disabled-delete-button' : 'delete-button')}>Delete</button>
+                    </div>
+                </div>
+                <div className="card-body">
+                    <div className="row">
+                        <div className="label">Location:</div>
+                        <div className="value">{restaurant.location}</div>
+                    </div>
+                    <div className="row">
+                        <div className="label">Price Range:</div>
+                        <div className="value">{"$".repeat(restaurant.price_range)}</div>
+                    </div>
+                    <div className="row">
+                        <div className="label">Ratings:</div>
+                        <div className="value">{renderRating(restaurant)}</div>
+                    </div>
+                 </div>
+            </div>  
+        )})} 
+      </div>    
     )
 }
 

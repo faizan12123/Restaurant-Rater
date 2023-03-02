@@ -1,0 +1,48 @@
+.header-container {
+    background-image: url('https://images.pexels.com/photos/1484516/pexels-photo-1484516.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+}
+.text-container {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    max-width: 40%;
+    color: #fff;
+    text-shadow: 2px 2px #000;
+  }
+  
+  /* Set styles for heading */
+  .text-container h1 {
+    font-size: 48px;
+    margin: 0 0 20px;
+  }
+  
+  /* Set styles for description */
+  .text-container p {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    .text-container {
+      max-width: 80%;
+      left: 50%;
+      top: 35%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .text-container h1 {
+      font-size: 36px;
+    }
+    
+    .text-container p {
+      font-size: 18px;
+    }
+  }

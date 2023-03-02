@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {Link} from "react-router-dom"
 import {toast} from "react-toastify"
 import Warning from './Warning'
-
+import './style/Login.css'
 
 const LoginPage = ({setAuth}) => {
     
@@ -69,40 +69,24 @@ const LoginPage = ({setAuth}) => {
       }
     }
     return (
-        <div>
+        <div className="login-form-container">
+<form onSubmit={onSubmitForm} class="login-form">
+  <h2><i className="fa fa-lock"></i> Login</h2>
+  <div class="form-group">
+    <label for="email"><i className="fa fa-envelope"></i> Email address</label>
+    <input value = {email} onChange = {e => onChange(e)} name = 'email' type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+  </div>
+  <div class="form-group">
+    <label for="password"><i className="fa fa-lock"></i> Password</label>
+    <input value = {password} onChange = {e => onChange(e)} type="password" name = 'password' class="form-control" id="password" placeholder="Password"/>
+  </div>
+  <button type="submit" class="form-button">Login</button>
+  <div class="form-group">
+    <p class="register-link"><Link to = '/register'>Don't have an account? Click here to register an account!</Link></p>
+  </div>
+  <Warning/>
+</form>
 
-<form onSubmit={onSubmitForm}>
-<div className="card-body container mt-5">
-
-         
-<h3 className="my-3 text-center"><i className="fa fa-lock"></i> Login</h3>
-
-        
-            <div className="md-form font-weight-light">
-              <i className="fa fa-envelope prefix grey-text"></i>
-              <input value = {email} onChange = {e => onChange(e)} type = 'email' name = 'email' placeholder='Email' className="form-control"/>
-              <label htmlFor="email">Your Email</label>
-            </div>
-
-          
-            <div className="md-form font-weight-light">
-              <i className="fa fa-lock prefix grey-text"></i>
-              <input value = {password} onChange = {e => onChange(e)}  type = 'password' name = 'password' placeholder='Password' className="form-control"/>
-              <label htmlFor="password">Your Password</label>
-            </div>
-
-            <div className="text-center mt-4">
-              <button className="btn btn-success" type="submit">Login</button>
-            </div>
-            {/* <button className='btn btn-success btn-block'>Submit</button> */}
-            
-            <Link to = '/register'>Don't have an account? Click here to register an account!</Link>
-            <div className="mt-3">
-      <Warning/>
-      </div>
-          </div>
-          
-          </form>
         </div>
     )
 }

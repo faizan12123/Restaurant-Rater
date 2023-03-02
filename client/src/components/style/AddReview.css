@@ -1,0 +1,62 @@
+.review-input-row > * {
+    flex: 1;
+    margin: 0.5rem;
+  }
+
+.review-input-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    margin-top: 0;
+  }
+  
+  .review-input-row input,
+  .review-input-row select,
+  .review-input-row button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .review-input-row input[type="text"],
+  .review-input-row input[type="number"] {
+    width: 200px;
+  }
+  
+  .review-input-row select {
+    width: 150px;
+  }
+  
+  .review-input-row button {
+    background-color: #3cba54;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .review-input-row button:hover {
+    background-color: #2f9e44;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .review-input-row {
+      flex-wrap: wrap;
+    }
+  
+    .review-input-row input,
+    .review-input-row select,
+    .review-input-row button {
+      margin: 5px;
+      flex-basis: 100%;
+    }
+  
+    .review-input-row select {
+      width: auto;
+    }
+  }

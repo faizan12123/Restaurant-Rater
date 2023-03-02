@@ -41,7 +41,7 @@ const App = () => { //connecting the urls to the corresponding react pages
   
     return ( 
         <RestaurantsContextProvider>
-            <div>
+            <div className="app-wrapper">
                 <Router>
                     <Routes>
 

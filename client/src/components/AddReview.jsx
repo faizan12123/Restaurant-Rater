@@ -4,6 +4,7 @@ import { RestaurantsContext } from '../context/RestaurantsContext';
 import RestaurantFinder from "../apis/RestaurantFinder"
 import Warning from './Warning';
 import {toast} from "react-toastify"
+import './style/AddReview.css'
 
 const AddReview = () => {
 
@@ -60,14 +61,12 @@ const AddReview = () => {
     }
 
     return (
+        
         <div>
-            <h1 className="font-weight-light display-5 text-center">Add a Review!</h1>
-            <form action ="">
-                <div className="form-row">
-                    {/*rating drop down list for the restaurant*/}
-                    <div className="form-group row">
-                        <label htmlFor="rating">Rating</label>
-                        <select value = {rating} onChange={e=> setRating(e.target.value)} id="rating" className='custom-select'>
+            <p className = "title">Leave a Review!</p>
+            <div class="review-input-row">
+            <textarea value = {reviewText} onChange={e=> setReviewText(e.target.value)} id="Review" placeholder="Enter review here"></textarea>
+                <select value = {rating} onChange={e=> setRating(e.target.value)} id="rating">
                             <option disabled>Rating</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -75,19 +74,9 @@ const AddReview = () => {
                             <option value="4">4</option>
                             <option value="5">5</option>
                         </select>
-                    </div>
-                    </div>
+                <button onClick={handleSubmitReview} type="submit">Add</button>
+            </div>
             
-                {/*Review input field*/}
-                <div className="form-group row">
-                    <label htmlFor="Review">Review</label>
-                    <textarea value = {reviewText} onChange={e=> setReviewText(e.target.value)} id="Review" className="form-control"></textarea>
-                </div>
-                
-
-                {/*submit button for the review*/}
-                <button onClick={handleSubmitReview} type="submit" className="btn btn-info mb-3">Submit</button>
-            </form>
             <Warning/>
         </div>
     )

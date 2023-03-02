@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import RestaurantFinder from "../apis/RestaurantFinder"
 import { RestaurantsContext } from '../context/RestaurantsContext';
 import {toast} from "react-toastify"
+import './style/AddRestaurant.css'
 
 const AddRestaurant = () => {
     const {addRestaurants} = useContext(RestaurantsContext)
@@ -58,40 +59,21 @@ const AddRestaurant = () => {
     }
 
     return (
-        <div className = "mb-4"> {/*to give a margin on the bottom*/}
-            <form action="">
-                {/*creates the row for the name, location, price_range and add button*/}
-                <div className="form-row">
-
-                 {/*name input field column*/}
-                    <div className="col">
-                    <input value = {name} onChange={e => setName(e.target.value)} type = "text" className="form-control" placeholder='Name' required="required"/> 
-                    </div>
-
-                {/*location input field column*/}
-                    <div className="col"> 
-                    <input value = {location} onChange={e => setLocation(e.target.value)} type = "text" className="form-control" placeholder='Location' required="required"/> 
-                    </div>
-
-                {/*price range drop down field column*/}
-                    <div className="col"> 
-                        <select value = {priceRange} onChange={e => setPriceRange(e.target.value)} className = "custom-select" required="required"> 
-                        <option disabled>Price Range</option>
-                        <option value = "1">$</option>
-                        <option value = "2">$$</option>
-                        <option value = "3">$$$</option>
-                        <option value = "4">$$$$</option>
-                        <option value = "5">$$$$$</option>
-                        </select>
-                    </div>
-
-                    {/*add button column*/}
-                    <div> 
-                    <button onClick={handleSubmit} type="submit" className="btn btn-info">Add</button>
-                    </div>
-                </div>
-            </form>
-            
+        <div>
+            <p className = "title">Add a Restaurant</p>
+            <div class="input-row">
+                <input value = {name} onChange={e => setName(e.target.value)} type = "text" placeholder='Name' required="required"/>
+                <input value = {location} onChange={e => setLocation(e.target.value)} type = "text" placeholder='Location' required="required"/>
+                <select value = {priceRange} onChange={e => setPriceRange(e.target.value)} required="required"> 
+                    <option disabled>Price Range</option>
+                    <option value = "1">$</option>
+                    <option value = "2">$$</option>
+                    <option value = "3">$$$</option>
+                    <option value = "4">$$$$</option>
+                    <option value = "5">$$$$$</option>
+                </select>
+                <button onClick={handleSubmit} type="submit">Add</button>
+            </div>
         </div>
     )
 }

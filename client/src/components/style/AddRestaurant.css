@@ -1,0 +1,64 @@
+
+  .input-row > * {
+    flex: 1;
+    margin: 0.5rem;
+  }
+
+.input-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    margin-top: 0;
+  }
+  
+  .input-row input,
+  .input-row select,
+  .input-row button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .input-row input[type="text"],
+  .input-row input[type="number"] {
+    width: 200px;
+  }
+  
+  .input-row select {
+    width: 150px;
+  }
+  
+  .input-row button {
+    background-color: #3cba54;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .input-row button:hover {
+    background-color: #2f9e44;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .input-row {
+      flex-wrap: wrap;
+    }
+  
+    .input-row input,
+    .input-row select,
+    .input-row button {
+      margin: 5px;
+      /* width: 100%; */
+    }
+  
+    .input-row select {
+      width: auto;
+    }
+  }
+  
